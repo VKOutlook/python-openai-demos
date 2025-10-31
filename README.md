@@ -44,7 +44,9 @@ Scripts (in increasing order of capability):
 1. [`function_calling_basic.py`](./function_calling_basic.py): Declares a single `lookup_weather` function and prompts the model. It prints the tool call (if any) or falls back to the model's normal content. No actual function execution occurs.
 2. [`function_calling_call.py`](./function_calling_call.py): Executes the `lookup_weather` function if the model requests it by parsing the returned arguments JSON and calling the local Python function.
 3. [`function_calling_extended.py`](./function_calling_extended.py): Shows a full round‑trip: after executing the function, it appends a `tool` role message containing the function result and asks the model again so it can incorporate real data into a final user-facing response.
-4. [`function_calling_multiple.py`](./function_calling_multiple.py): Exposes multiple functions (`lookup_weather`, `lookup_movies`) so you can see how the model chooses among them and how multiple tool calls could be returned.
+4. [`function_calling_errors.py`](./function_calling_errors.py): Same as the extended example but adds robust error handling (malformed JSON arguments, missing tool implementations, execution exceptions, JSON serialization fallback).
+5. [`function_calling_parallel.py`](./function_calling_parallel.py): Demonstrates the model returning multiple tool calls in a single response
+6. [`function_calling_while_loop.py`](./function_calling_while_loop.py): An iterative conversation loop that keeps executing sequential tool calls (with error handling) until the model produces a final natural language answer.
 
 You must use a model that supports function calling (such as the defaults `gpt-4o`, `gpt-4o-mini`, etc.). Some local or older models may not support the `tools` parameter.
 
@@ -60,11 +62,11 @@ python -m pip install -r requirements-rag.txt
 
 Then run the scripts (in order of increasing complexity):
 
-* [`rag_csv.py`](./rag.py): Retrieves matching results from a CSV file and uses them to answer user's question.
+* [`rag_csv.py`](./rag_csv.py): Retrieves matching results from a CSV file and uses them to answer user's question.
 * [`rag_multiturn.py`](./rag_multiturn.py): The same idea, but with a back-and-forth chat interface using `input()` which keeps track of past messages and sends them with each chat completion call.
 * [`rag_queryrewrite.py`](./rag_queryrewrite.py): Adds a query rewriting step to the RAG process, where the user's question is rewritten to improve the retrieval results.
-* [`rag_documents_ingestion.py`](./rag_ingestion.py): Ingests PDFs by using pymupdf to convert to markdown, then using Langchain to split into chunks, then using OpenAI to embed the chunks, and finally storing in a local JSON file.
-* [`rag_documents_flow.py`](./rag_pdfs.py): A RAG flow that retrieves matching results from the local JSON file created by `rag_documents_ingestion.py`.
+* [`rag_documents_ingestion.py`](./rag_documents_ingestion.py): Ingests PDFs by using pymupdf to convert to markdown, then using Langchain to split into chunks, then using OpenAI to embed the chunks, and finally storing in a local JSON file.
+* [`rag_documents_flow.py`](./rag_documents_flow.py): A RAG flow that retrieves matching results from the local JSON file created by `rag_documents_ingestion.py`.
 * [`rag_documents_hybrid.py`](./rag_documents_hybrid.py): A RAG flow that implements a hybrid retrieval with both vector and keyword search, merging with Reciprocal Rank Fusion (RRF), and semantic re-ranking with a cross-encoder model.
 
 ## Structured outputs

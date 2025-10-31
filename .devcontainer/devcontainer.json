@@ -18,7 +18,8 @@
             "settings": {
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
                 "remote.autoForwardPorts": false,
-                "python.createEnvironment.trigger": "off"
+                "python.createEnvironment.trigger": "off",
+                "python.analysis.typeCheckingMode": "off"
             },
 
             // Add the IDs of extensions you want installed when the container is created.
